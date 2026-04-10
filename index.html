@@ -957,7 +957,9 @@ Your job:
   RECIPE:name=[exact recipe name]|slug=[exact slug]|desc=[short reason why]|tags=[tag1,tag2]
   (This special format will be parsed to show recipe cards — always use it for recommendations)
 - Answer general cocktail questions in plain text
-- If someone asks for mocktails, only recommend recipes where mocktail=true`;
+- If someone asks for mocktails, only recommend recipes where mocktail=true
+- Each recipe has a menu_tags field listing which seasonal menus it appeared on (e.g. "2026 Spring", "2024 Holiday", "2024 Dry January", "Easter Menu", "St Patricks Day Menu"). Use this to answer questions like "what was on the Spring 2026 menu?" or "has the Gold Rush ever been on a seasonal menu?" — show all matching recipes as cards when listing a full menu
+- When listing all drinks from a specific menu, show every recipe that has that menu tag, not just 2-3`;
 
 // ── FAVORITES ──
 let favs = JSON.parse(localStorage.getItem('ra_favs') || '[]');
