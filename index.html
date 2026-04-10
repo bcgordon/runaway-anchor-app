@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><link rel="apple-touch-icon" href="runaway-anchor-icon.png">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Runaway Anchor — Cocktails & Mocktails</title>
@@ -1176,19 +1176,17 @@ async function sendMsg() {
   input.value = '';
   document.getElementById('chips').style.display = 'none';
   addMsg('user', text);
-  history.push({ role: 'user', content: text });
   isLoading = true; btn.disabled = true;
   showTyping();
   try {
     const res = await fetch('https://runaway-anchor-proxy.bcg481.workers.dev', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: SYSTEM_PROMPT, messages: history })
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: SYSTEM_PROMPT, messages: [{ role: 'user', content: text }] })
     });
     const data = await res.json();
     const raw = data.content.map(c => c.text || '').join('');
     const recipes = parseRecipes(raw);
-    history.push({ role: 'assistant', content: raw });
     hideTyping();
     addMsg('bot', cleanText(raw), recipes);
   } catch(e) {
