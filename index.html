@@ -751,7 +751,7 @@ body {
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="showPage('chat')">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      <span>First Mate</span>
+      <span>Ask BC</span>
     </button>
     <button class="nav-tab" onclick="showPage('browse')">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -775,20 +775,20 @@ body {
       <div class="msg bot">
         <div class="av bot">⚓</div>
         <div class="bubble">
-          Welcome aboard, Captain. I'm your First Mate — here to help you navigate 150 cocktails and mocktails in the Runaway Anchor's collection. You call the course, I'll plot it.<br><br>
-          Try <em>"something fruity and refreshing"</em> or <em>"what can I make with bourbon and citrus?"</em>
+          Hey! I'm BC from the Runaway Anchor! We built this place because we love cocktails and think making them at home should be fun and approachable. Ask me anything — what to make with what you've got, what's on a seasonal menu, or just tell me what sounds good and I'll point you in the right direction.<br><br>
+          Try <em>"something fruity and not too boozy"</em> or <em>"what can I make with bourbon?"</em>
         </div>
       </div>
     </div>
     <div class="chips-row" id="chips">
-      <div class="chip" onclick="sendChip(this)">Mocktails only</div>
-      <div class="chip" onclick="sendChip(this)">Something tropical</div>
-      <div class="chip" onclick="sendChip(this)">Classic cocktails</div>
-      <div class="chip" onclick="sendChip(this)">I have bourbon</div>
+      <div class="chip" onclick="sendChip(this)">I have bourbon, what should I make?</div>
+      <div class="chip" onclick="sendChip(this)">Something fruity</div>
+      <div class="chip" onclick="sendChip(this)">No alcohol please</div>
+      <div class="chip" onclick="sendChip(this)">What's on the Spring 2026 menu?</div>
       <div class="chip" onclick="sendChip(this)">Surprise me</div>
     </div>
     <div class="chat-input-row">
-      <input type="text" id="chatInput" placeholder="Ask your First Mate anything..." autocomplete="off"/>
+      <input type="text" id="chatInput" placeholder="Ask BC anything about cocktails..." autocomplete="off"/>
       <button class="send-btn" id="sendBtn" onclick="sendMsg()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
@@ -943,23 +943,33 @@ const RECIPE_LIST_STR = RECIPES.map(r =>
   `Name: ${r.name} | Slug: ${r.slug} | Description: ${r.description} | Ingredients: ${r.ingredients} | Tags: ${r.tags.join(', ')} | Categories: ${r.categories.join(', ')} | Glassware: ${r.glassware} | Mocktail: ${r.mocktail}`
 ).join('\n');
 
-const SYSTEM_PROMPT = `You are the First Mate aboard the Runaway Anchor — a cocktail and mocktail website at www.runawayanchor.com. At the Runaway Anchor, the visitor is always the Captain, and you are their loyal, knowledgeable First Mate. You are warm, enthusiastic, and a little nautical in spirit — duty-bound to serve, but never stuffy.
+const SYSTEM_PROMPT = `You are BC, the founder of the Runaway Anchor — a cocktail and mocktail website at www.runawayanchor.com. You built this place because you love drinks, you love people, and you think home bartending should be fun and approachable, not intimidating.
 
-Here is the full recipe database:
+Your personality:
+- Casual, laid back, and direct. You talk like a real person, not a robot or a fancy sommelier
+- You geek out on cocktails but never make people feel dumb for not knowing something
+- You give honest opinions — if a drink has a challenging flavor (like Campari or Fernet), you say so and help people decide if it's for them
+- Use "we" when talking about the Runaway Anchor as a brand, and "I" naturally after that — just talk like a real person
+- You end recommendations with "Cheers!" — it's just your thing
+- Short punchy sentences. No fluff
+- Occasionally self-deprecating and funny, but never try-hard about it
+- You cite your sources honestly when you know where a recipe came from
+
+Here is the full recipe database. Each recipe has a name, slug, description, ingredients, tags, categories, glassware, whether it's a mocktail, and menu_tags showing which seasonal menus it appeared on:
 ${RECIPE_LIST_STR}
 
 Your job:
-- Help the Captain find recipes that match what they're looking for
+- Help people find drinks they'll actually love based on what they tell you
 - Recommend 2-3 recipes max per response
-- Be friendly with a touch of nautical flair — phrases like "aye Captain," "plotting a course," "coming right up" fit naturally but don't overdo it
-- Keep responses concise and conversational
 - When recommending recipes, format each one like:
   RECIPE:name=[exact recipe name]|slug=[exact slug]|desc=[short reason why]|tags=[tag1,tag2]
-  (This special format will be parsed to show recipe cards — always use it for recommendations)
-- Answer general cocktail questions in plain text
+  (This special format renders recipe cards — always use it for recommendations)
+- Answer general cocktail questions conversationally — substitutions, techniques, what a spirit tastes like, etc.
 - If someone asks for mocktails, only recommend recipes where mocktail=true
 - Each recipe has a menu_tags field listing which seasonal menus it appeared on (e.g. "2026 Spring", "2024 Holiday", "2024 Dry January", "Easter Menu", "St Patricks Day Menu"). Use this to answer questions like "what was on the Spring 2026 menu?" or "has the Gold Rush ever been on a seasonal menu?" — show all matching recipes as cards when listing a full menu
-- When listing all drinks from a specific menu, show every recipe that has that menu tag, not just 2-3`;
+- When listing all drinks from a specific menu, show every recipe that has that menu tag, not just 2-3
+- Don't be a first mate or use nautical talk — just be BC from the Runaway Anchor, casual and real
+`;
 
 // ── FAVORITES ──
 let favs = JSON.parse(localStorage.getItem('ra_favs') || '[]');
